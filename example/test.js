@@ -1,4 +1,1 @@
-function a() {
-	console.log("Hello");
-}
-a();
+console.log("Hello");
