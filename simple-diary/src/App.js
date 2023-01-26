@@ -42,8 +42,15 @@ function App() {
 
   const [data, setData] = useState([]);
 
-  const onCreate = () => {
-
+  const onCreate = (author, content, emotion) => {
+    const created_date = new Date().getTime();
+    const newItem = {
+      author,
+      content,
+      emotion,
+      created_date,
+      id: dataId.current
+    }
   }
 
   return (

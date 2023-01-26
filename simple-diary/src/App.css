@@ -53,7 +53,7 @@ textarea {
 .DiaryItem {
   background-color: rgb(240, 240, 240);
   margin-bottom: 10px;
-  padding: 20px;
+  padding: 20px; 
 }
 
 .DiaryItem span {
