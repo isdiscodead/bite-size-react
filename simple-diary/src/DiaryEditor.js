@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 
 
-const DiaryEditor = () => {
+const DiaryEditor = ({ onCreate }) => {
     // author와 content는 같은 방식으로 동작 + 같은 자료형이므로 하나의 state로 묶어 관리 가능 
     const [state, setState] = useState({
         author: "",
@@ -38,6 +38,8 @@ const DiaryEditor = () => {
             contentInput.current.focus();
             return;
         }
+
+        onCreate(state.author, state.content, state.emotion);
 
         // console.log(state);
         alert("저장 성공");

@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 
 /* 일기 리스트를 위한 임시 리스트
@@ -42,6 +42,8 @@ function App() {
 
   const [data, setData] = useState([]);
 
+  const dataId = useRef(0);
+
   const onCreate = (author, content, emotion) => {
     const created_date = new Date().getTime();
     const newItem = {
@@ -50,13 +52,16 @@ function App() {
       emotion,
       created_date,
       id: dataId.current
-    }
+    };
+    // 개수 증가
+    dataId.current += 1;
+    setData([newItem, ...data]);
   }
 
   return (
     <div className="App">
       <DiaryEditor onCreate={onCreate} />
-      <DiaryList />
+      <DiaryList diaryList={data}/>
     </div>
   );
 };
