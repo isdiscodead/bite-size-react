@@ -2,6 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
+
+import React from 'react'
 import { useState, useRef } from 'react';
 
 
@@ -57,11 +59,17 @@ function App() {
     dataId.current += 1;
     setData([newItem, ...data]);
   }
+  
+  
+  const onDelete = ( targetId ) => {
+	  // console.log(`${targetId}가 삭제되었습니다.`);
+	  
+  };
 
   return (
     <div className="App">
       <DiaryEditor onCreate={onCreate} />
-      <DiaryList diaryList={data}/>
+      <DiaryList diaryList={data} onDelete={onDelete} />
     </div>
   );
 };
