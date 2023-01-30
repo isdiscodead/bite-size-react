@@ -61,15 +61,27 @@ function App() {
   }
   
   
-  const onDelete = ( targetId ) => {
+  const onRemove = ( targetId ) => {
 	  // console.log(`${targetId}가 삭제되었습니다.`);
-	  
+	  const newDiaryList = data.filter((it) => it.id !== targetId);
+	  setData(newDiaryList);
   };
+	
+	
+  const onEdit = (targetId, newContent) => {
+	  setData(
+	  	data.map((it) => {
+			// id가 일치하는 데이터를 찾아서 내용물만 바꿔줌! 일치하지 않을 경우엔 그대로 냅둠 ... 
+			it.id === target.id ? {...it, content: newContent } : it
+		})
+	  );
+  };
+	
 
   return (
     <div className="App">
       <DiaryEditor onCreate={onCreate} />
-      <DiaryList diaryList={data} onDelete={onDelete} />
+      <DiaryList diaryList={data} onRemove={onRemove} onEdit= />
     </div>
   );
 };
