@@ -42,6 +42,33 @@ const dummyList = [
 ];
 */
 
+// https://jsonplaceholder.typicode.com/comments/
+
+const getData = async() => { // promise를 반환하는 비동기 함수 
+	const res = await fetch('https://jsonplaceholder.typicode.com/comments/https://jsonplaceholder.typicode.com/comments/')
+	.then((res) => res.json() );
+	
+	// body는 내용, email를 작성자로 ...
+	const initData = res.slice(0, 20).map((it) => {  // 0 ~ 19 인덱스
+		return {
+			author: it.email,
+			content: it.body,
+			emotion: Math.floor(Math.random() * 5) + 1, // ( 0 ~ 4 ) + 1
+			created_date: new Date().getTime(),
+			id: dataId.current ++
+		}
+	});
+	
+	setData(initData);
+};
+
+
+// mount 시에 데이터 불러오기 
+useEffect(() => {
+	getData();
+}, []);
+
+
 function App() {
 
   const [data, setData] = useState([]);
@@ -82,9 +109,9 @@ function App() {
 
   return (
     <div className="App">
-	  <Lifecycle />
+		  {/* <Lifecycle /> */}
       <DiaryEditor onCreate={onCreate} />
-      <DiaryList diaryList={data} onRemove={onRemove} onEdit= />
+      <DiaryList diaryList={data} onRemove={onRemove} onEdit={onEdit} />
     </div>
   );
 };
