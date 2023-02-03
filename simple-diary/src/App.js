@@ -4,6 +4,7 @@ import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
 import Lifecycle from './Lifecycle';
+import OptimizeTest from "./OptimizeTest";
 
 import React from 'react'
 import { useState, useRef } from 'react';
@@ -106,11 +107,29 @@ function App() {
 	  );
   };
 	
-
+	
+	const getDiaryAnalysis = () => {
+		// console.log("일기 분석 시작");
+		
+		const goodCount = data.filter((it) => it.emotion >= 3).length;
+		const badCount = data.length - goodCount;
+		const goodRatio = (goodCount / badCount) * 100;
+		
+		return {goodCount, badCount, goodRatio};
+	}
+	
+	const {goodCount, badCount, goodRatio} = getDiaryAnalysis();
+	
+	
   return (
     <div className="App">
-		  {/* <Lifecycle /> */}
+	  {/* <Lifecycle /> */}
+	  <OptimizeTest />
       <DiaryEditor onCreate={onCreate} />
+		  <div>전체 일기 : {data.length}</div>
+		  <div>기분이 좋았던 일기 : {goodCount}</div>
+		  <div>기분이 나빴던 일기 : {badCount}</div>
+		  <div>기분 좋은 일기 비율 : {goodRatio}%</div>
       <DiaryList diaryList={data} onRemove={onRemove} onEdit={onEdit} />
     </div>
   );
