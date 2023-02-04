@@ -3,6 +3,10 @@ import { useState, useRef } from "react";
 
 
 const DiaryEditor = ({ onCreate }) => {
+	useEffect(() => {
+		console.log("DiaryEditor Rendered");
+	});
+	
     // author와 content는 같은 방식으로 동작 + 같은 자료형이므로 하나의 state로 묶어 관리 가능 
     const [state, setState] = useState({
         author: "",
@@ -96,4 +100,4 @@ const DiaryEditor = ({ onCreate }) => {
 	);
 };
 
-export default DiaryEditor;
+export default React.memo(DiaryEditor);

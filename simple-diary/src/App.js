@@ -7,7 +7,7 @@ import Lifecycle from './Lifecycle';
 import OptimizeTest from "./OptimizeTest";
 
 import React from 'react'
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 
 
 /* 일기 리스트를 위한 임시 리스트
@@ -76,8 +76,9 @@ function App() {
 
   const dataId = useRef(0);
 
-  const onCreate = (author, content, emotion) => {
+  const onCreate = useCallback((author, content, emotion) => {
     const created_date = new Date().getTime();
+	  
     const newItem = {
       author,
       content,
@@ -85,10 +86,13 @@ function App() {
       created_date,
       id: dataId.current
     };
+	  
     // 개수 증가
     dataId.current += 1;
-    setData([newItem, ...data]);
-  }
+	// 함수형 업데이트로 최신 데이터 사용 가능하게끔 !! 
+    setData((data) => [newItem, ...data]);
+	  
+  }, []); // 의존성 배열이 빈 배열이므로 mount 시에만 새로 ... 
   
   
   const onRemove = ( targetId ) => {
@@ -124,7 +128,7 @@ function App() {
   return (
     <div className="App">
 	  {/* <Lifecycle /> */}
-	  <OptimizeTest />
+	  {/* <OptimizeTest /> */}
       <DiaryEditor onCreate={onCreate} />
 		  <div>전체 일기 : {data.length}</div>
 		  <div>기분이 좋았던 일기 : {goodCount}</div>
