@@ -7,7 +7,7 @@ import Lifecycle from './Lifecycle';
 import OptimizeTest from "./OptimizeTest";
 
 import React from 'react'
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useReducer, useRef, useCallback, useEffect } from 'react';
 
 
 /* 일기 리스트를 위한 임시 리스트
@@ -60,7 +60,7 @@ const getData = async() => { // promise를 반환하는 비동기 함수
 		}
 	});
 	
-	setData(initData);
+	disaptch({type: 'INIT', data: initData})
 };
 
 
@@ -70,46 +70,83 @@ useEffect(() => {
 }, []);
 
 
+// 앱 컴포넌트와 state 분리
+const reducer = (state, action) => {
+	switch ( action.type ) {
+		case 'INIT' : {
+			return action.data // initData를 return 
+		}
+			
+		case 'CREATE' : {
+			const created_date = new Date().getTime();
+			const newItem = {
+				...action.data, // 입력한 data spread 
+				created_date
+			}
+			return [newItem, ...state];
+		}
+			
+		case 'REMOVE' : {
+			
+		}
+			
+		case 'EDIT' : {
+			
+		}
+			
+		default :
+			return state;
+	}
+};
+
+
 function App() {
 
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
+	
+  const [data, dispatch] = useReducer(reducer, []);
 
   const dataId = useRef(0);
 
   const onCreate = useCallback((author, content, emotion) => {
-    const created_date = new Date().getTime();
+    
+	  dispatch({ type: 'CREATE', data: {author, content, emotion, id: dataId.current} })
 	  
-    const newItem = {
-      author,
-      content,
-      emotion,
-      created_date,
-      id: dataId.current
-    };
+	  	/*
+	  	const created_date = new Date().getTime();
+	  
+		const newItem = {
+		  author,
+		  content,
+		  emotion,
+		  created_date,
+		  id: dataId.current
+		};
+		*/
 	  
     // 개수 증가
     dataId.current += 1;
+
 	// 함수형 업데이트로 최신 데이터 사용 가능하게끔 !! 
-    setData((data) => [newItem, ...data]);
+    // setData((data) => [newItem, ...data]);
 	  
   }, []); // 의존성 배열이 빈 배열이므로 mount 시에만 새로 ... 
   
   
-  const onRemove = ( targetId ) => {
+  const onRemove = useCallback(( targetId ) => {
 	  // console.log(`${targetId}가 삭제되었습니다.`);
-	  const newDiaryList = data.filter((it) => it.id !== targetId);
-	  setData(newDiaryList);
-  };
+	  setData(data => data.filter((it) => it.id !== targetId));
+  }, []);
 	
 	
-  const onEdit = (targetId, newContent) => {
-	  setData(
-	  	data.map((it) => {
+  const onEdit = useCallback((targetId, newContent) => {
+	  setData((data) =>
+		data.map((it) => 
 			// id가 일치하는 데이터를 찾아서 내용물만 바꿔줌! 일치하지 않을 경우엔 그대로 냅둠 ... 
 			it.id === target.id ? {...it, content: newContent } : it
-		})
+		)
 	  );
-  };
+  }, []);
 	
 	
 	const getDiaryAnalysis = () => {

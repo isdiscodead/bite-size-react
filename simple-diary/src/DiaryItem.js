@@ -1,6 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const DiaryItem = ({ onDelete, onEdit, id, author, content, emotion, created_date }) => {
+	
+	useEffect(() => { console.log(`item ${id} rendered`) });
 	
 	// 현재 수정 중인지 아닌지의 state를 보관 
 	const [isEdit, setIsEdit] = useState(false);
