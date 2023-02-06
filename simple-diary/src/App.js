@@ -87,11 +87,14 @@ const reducer = (state, action) => {
 		}
 			
 		case 'REMOVE' : {
-			
+			return state.filter((it) => it.id !== action.targetId );
 		}
 			
 		case 'EDIT' : {
-			
+			return state.map((it) => 
+						 it.id === action.targetId ? 
+							 {...it, content: action.newContent} : it 
+							);
 		}
 			
 		default :
@@ -135,17 +138,21 @@ function App() {
   
   const onRemove = useCallback(( targetId ) => {
 	  // console.log(`${targetId}가 삭제되었습니다.`);
-	  setData(data => data.filter((it) => it.id !== targetId));
+	  // setData(data => data.filter((it) => it.id !== targetId));
+	  dispatch({type: "REMOVE", targetId});
   }, []);
 	
 	
   const onEdit = useCallback((targetId, newContent) => {
+	  dispatch({ type: "EDIT", targetId, newContent });
+	  /*
 	  setData((data) =>
 		data.map((it) => 
 			// id가 일치하는 데이터를 찾아서 내용물만 바꿔줌! 일치하지 않을 경우엔 그대로 냅둠 ... 
 			it.id === target.id ? {...it, content: newContent } : it
 		)
 	  );
+	  */
   }, []);
 	
 	
