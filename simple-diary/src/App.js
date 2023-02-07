@@ -7,7 +7,7 @@ import Lifecycle from './Lifecycle';
 import OptimizeTest from "./OptimizeTest";
 
 import React from 'react'
-import { useReducer, useRef, useCallback, useEffect } from 'react';
+import { useReducer, useRef, useCallback, useEffect, useMemo } from 'react';
 
 
 /* 일기 리스트를 위한 임시 리스트
@@ -98,9 +98,16 @@ const reducer = (state, action) => {
 		}
 			
 		default :
-			return state;
+			return state; // 잘못된 state의 경우 그냥 그대로 return 
 	}
 };
+
+
+// Context 생성 후 export ... 
+export const DiaryStateContext = React.createContext();
+
+// 
+
 
 
 function App() {
@@ -170,16 +177,18 @@ function App() {
 	
 	
   return (
-    <div className="App">
-	  {/* <Lifecycle /> */}
-	  {/* <OptimizeTest /> */}
-      <DiaryEditor onCreate={onCreate} />
-		  <div>전체 일기 : {data.length}</div>
-		  <div>기분이 좋았던 일기 : {goodCount}</div>
-		  <div>기분이 나빴던 일기 : {badCount}</div>
-		  <div>기분 좋은 일기 비율 : {goodRatio}%</div>
-      <DiaryList diaryList={data} onRemove={onRemove} onEdit={onEdit} />
-    </div>
+	<DiaryStateContext.Provider>
+		<div className="App">
+		  {/* <Lifecycle /> */}
+		  {/* <OptimizeTest /> */}
+		  <DiaryEditor onCreate={onCreate} />
+			  <div>전체 일기 : {data.length}</div>
+			  <div>기분이 좋았던 일기 : {goodCount}</div>
+			  <div>기분이 나빴던 일기 : {badCount}</div>
+			  <div>기분 좋은 일기 비율 : {goodRatio}%</div>
+		  <DiaryList diaryList={data} onRemove={onRemove} onEdit={onEdit} />
+		</div>
+    </DiaryStateContext.Provider>
   );
 };
 
