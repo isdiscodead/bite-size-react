@@ -1,6 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 
-const DiaryItem = ({ onDelete, onEdit, id, author, content, emotion, created_date }) => {
+const DiaryItem = ({ id, author, content, emotion, created_date }) => {
+	// context로부터 함수 가져오기 
+	const { onRemove, onEdit } = useContext(DiaryDispatchContext);
 	
 	useEffect(() => { console.log(`item ${id} rendered`) });
 	
@@ -13,7 +15,7 @@ const DiaryItem = ({ onDelete, onEdit, id, author, content, emotion, created_dat
 	
 	const hanleRemove = () => {
 		if ( window.confirm(`${id}번째 일기를 정말 삭제하시겠습니가?`)) {
-			onDelete(id);
+			onRemove(id);
 		}
 	}
 	

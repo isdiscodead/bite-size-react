@@ -1,8 +1,10 @@
 import React from 'react';
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 
 
-const DiaryEditor = ({ onCreate }) => {
+const DiaryEditor = () => {
+	const { onCreate } = useContext(DiaryDispatchContext);
+	
 	useEffect(() => {
 		// console.log("DiaryEditor Rendered");
 	});
