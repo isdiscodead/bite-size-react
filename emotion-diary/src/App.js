@@ -5,20 +5,6 @@ import React from 'react';
 
 
 function App() {
-	
-	const getDiaryAnalysis = () => {
-		// console.log("일기 분석 시작");
-		
-		const goodCount = data.filter((it) => it.emotion >= 3).length;
-		const badCount = data.length - goodCount;
-		const goodRatio = (goodCount / badCount) * 100;
-		
-		return {goodCount, badCount, goodRatio};
-	}
-	
-	const {goodCount, badCount, goodRatio} = getDiaryAnalysis();
-	
-	
   return (
 	<DiaryStateContext.Provider value={ data }>
 		  <DiaryDispatchContext.Provider value={ memoizedDispatches }>
